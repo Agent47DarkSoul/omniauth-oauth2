@@ -94,8 +94,8 @@ module OmniAuth
 
         Rails.logger.error("Code: #{verifier.inspect}")
         Rails.logger.error("Callback URL: #{callback_url.inspect}")
-        Rails.logger.error("Token Params: #{token_params.inspect}")
-        Rails.logger.error("AuthToken Params: #{options.auth_token_params.inspect}")
+        Rails.logger.error("Token Params: #{token_params.to_hash(:symbolize_keys => true).inspect}")
+        Rails.logger.error("AuthToken Params: #{deep_symbolize(options.auth_token_params).inspect}")
 
         client.auth_code.get_token(verifier, {:redirect_uri => callback_url}.merge(token_params.to_hash(:symbolize_keys => true)), deep_symbolize(options.auth_token_params))
       end
