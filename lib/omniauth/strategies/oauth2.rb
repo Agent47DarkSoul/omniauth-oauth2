@@ -91,13 +91,15 @@ module OmniAuth
 
       def build_access_token
         verifier = request.params["code"]
+        cb_url = full_host + script_name + callback_path
 
         Rails.logger.error("Code: #{verifier.inspect}")
         Rails.logger.error("Callback URL: #{callback_url.inspect}")
+        Rails.logger.error("CB URL: #{cb_url.inspect}")
         Rails.logger.error("Token Params: #{token_params.to_hash(:symbolize_keys => true).inspect}")
         Rails.logger.error("AuthToken Params: #{deep_symbolize(options.auth_token_params).inspect}")
 
-        client.auth_code.get_token(verifier, {:redirect_uri => callback_url}.merge(token_params.to_hash(:symbolize_keys => true)), deep_symbolize(options.auth_token_params))
+        client.auth_code.get_token(verifier, {:redirect_uri => cb_url}.merge(token_params.to_hash(:symbolize_keys => true)), deep_symbolize(options.auth_token_params))
       end
 
       def deep_symbolize(options)
