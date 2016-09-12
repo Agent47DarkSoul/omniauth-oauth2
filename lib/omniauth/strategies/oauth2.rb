@@ -66,9 +66,9 @@ module OmniAuth
       def callback_phase # rubocop:disable AbcSize, CyclomaticComplexity, MethodLength, PerceivedComplexity
         error = request.params["error_reason"] || request.params["error"]
 
-        Rails.logger.error("Session: #{session.inspect}")
-        Rails.logger.error("State in session: #{session['omniauth.state'].inspect}")
-        Rails.logger.error("State in request: #{request.params['state'].inspect}")
+        OmniAuth.config.logger.error("Session: #{session.inspect}")
+        OmniAuth.config.logger.error("State in session: #{session['omniauth.state'].inspect}")
+        OmniAuth.config.logger.error("State in request: #{request.params['state'].inspect}")
 
         if error
           fail!(error, CallbackError.new(request.params["error"], request.params["error_description"] || request.params["error_reason"], request.params["error_uri"]))
@@ -93,11 +93,11 @@ module OmniAuth
         verifier = request.params["code"]
         cb_url = full_host + script_name + callback_path
 
-        Rails.logger.error("Code: #{verifier.inspect}")
-        Rails.logger.error("Callback URL: #{callback_url.inspect}")
-        Rails.logger.error("CB URL: #{cb_url.inspect}")
-        Rails.logger.error("Token Params: #{token_params.to_hash(:symbolize_keys => true).inspect}")
-        Rails.logger.error("AuthToken Params: #{deep_symbolize(options.auth_token_params).inspect}")
+        OmniAuth.config.logger.error("Code: #{verifier.inspect}")
+        OmniAuth.config.logger.error("Callback URL: #{callback_url.inspect}")
+        OmniAuth.config.logger.error("CB URL: #{cb_url.inspect}")
+        OmniAuth.config.logger.error("Token Params: #{token_params.to_hash(:symbolize_keys => true).inspect}")
+        OmniAuth.config.logger.error("AuthToken Params: #{deep_symbolize(options.auth_token_params).inspect}")
 
         client.auth_code.get_token(verifier, {:redirect_uri => cb_url}.merge(token_params.to_hash(:symbolize_keys => true)), deep_symbolize(options.auth_token_params))
       end
